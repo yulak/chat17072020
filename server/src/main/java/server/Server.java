@@ -25,7 +25,7 @@ public class Server {
         ServerSocket server = null;
         Socket socket;
 
-        final int PORT = 8189;
+        final int PORT = 7777;
 
         try {
             server = new ServerSocket(PORT);

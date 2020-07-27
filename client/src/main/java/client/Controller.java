@@ -19,11 +19,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -258,4 +258,44 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+    //##########################// //##########################// //##########################//
+    private void SaveHistory() throws IOException {
+        try {
+            File history = new File("history.txt");
+            if (!history.exists()){
+                System.out.println("Файла нет, идет его создание");
+                history.createNewFile();
+            }
+            PrintWriter fileWriter = new PrintWriter(new PrintWriter(history, String.valueOf(false)));
+
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(textArea.getText());
+            bufferedWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadHistory() throws IOException{
+        int resetHistory = 100;
+        File history = new File("history.txt");
+        List<String> historyList = new ArrayList<>();
+        FileInputStream in = new FileInputStream(history);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+
+        String temp;
+        while ((temp = bufferedReader.readLine()) != null){
+            historyList.add(temp);
+        }
+        if (historyList.size() > resetHistory){
+            for (int i = historyList.size() - resetHistory; i <= (historyList.size() -1); i++){
+                textArea.appendText(historyList.get(i) + "\n");
+            }
+        }else {
+            for (int i= 0; i< resetHistory; i++){
+                System.out.println(historyList.get(i));
+            }
+        }
+    }
+    //##########################// //##########################// //##########################//
 }
